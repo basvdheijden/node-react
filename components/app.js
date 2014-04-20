@@ -16,21 +16,38 @@ var app;
  * Dependencies
  */
 var HomePage = React.createClass({
-  io: false,
+  update: function() {
+    this.props.onUpdate(this.refs.data.getDOMNode().value);
+  },
+
+	render: function() {
+		return (
+      <textarea ref="data" value={this.props.data} onChange={this.update} autoFocus={true} />
+    );
+	}
+});
+
+/**
+ * Module definition
+ */
+var App = React.createClass({
   mixins: [ReactAsync.Mixin],
+  io: false,
 
   getInitialStateAsync: function(cb) {
     if (app) {
+      console.log(app.get('data'));
       return cb(null, {
-        defaultValue: app.get('data')
+        data: app.get('data')
       });
     }
 
     this.io.on('connect', function(data) {
       cb(null, {
-        defaultValue: data
+        data: data
       });
     });
+
     this.io.emit('data');
   },
 
@@ -44,48 +61,31 @@ var HomePage = React.createClass({
     }
   },
 
-  update: function() {
-    var data = this.refs.data.getDOMNode().value;
-
+  update: function(data) {
     this.setState({
-      defaultValue: data
+      data: data
     });
 
     this.io.emit('data', {
-      defaultValue: data
+      data: data
     });
   },
 
 	render: function() {
 		return (
-      <textarea ref="data" value={this.state.defaultValue} onChange={this.update} />
-    );
-	}
-});
-
-/**
- * Module definition
- */
-var App = React.createClass({
-  mixins: [ReactAsync.Mixin],
-  io: false,
-
-
-	render: function() {
-		return (
 			<html>
         <head>
-          <link rel="stylesheet" href="/build/style.css" />
+          <link rel="stylesheet" href="/public/style.css" />
           <script src="/socket.io/socket.io.js"></script>
           <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
           <script src="/build/client.js"></script>
-          <script src="/build/script.js"></script>
+          <script src="/public/script.js"></script>
 
         </head>
         <body>
           <div className="main">
-            <Pages path={this.props.path}>
-              <Page path="/" handler={HomePage} />
+            <Pages path="/">
+              <Page path="/" handler={HomePage} data={this.state.data} onUpdate={this.update} />
             </Pages>
           </div>
         </body>

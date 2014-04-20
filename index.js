@@ -27,7 +27,7 @@ app.http().io();
 app.set('data', 'kip');
 
 app.io.route('data', function(req) {
-  app.set('data', req.data.defaultValue);
+  app.set('data', req.data.data);
   req.io.broadcast('data', req.data);
 });
 
@@ -36,6 +36,7 @@ app.io.route('connect', function(req) {
 });
 
 app.use('/build', express.static(__dirname + '/build'));
+app.use('/public', express.static(__dirname + '/public'));
 app.use(render);
 
 app.listen(3030);
