@@ -1,0 +1,29 @@
+{
+  "name": "test",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "~4.0.0",
+    "envify": "~1.2.1",
+    "react": "~0.10.0",
+    "react-async": "~0.9.1",
+    "fibers": "~1.0.1",
+    "node-jsx": "~0.10.0",
+    "react-router-component": "~0.18.2",
+    "express.io": "~1.1.13"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.4",
+    "browserify": "~3.41.0",
+    "grunt-browserify": "~2.0.7",
+    "grunt-contrib-watch": "~0.6.1",
+    "reactify": "~0.11.0",
+    "grunt-contrib-jshint": "~0.10.0"
+  }
+}
