@@ -17,22 +17,30 @@ var app;
  */
 var HomePage = React.createClass({
   io: false,
+  mixins: [ReactAsync.Mixin],
 
-  getInitialState: function(cb) {
+  getInitialStateAsync: function(cb) {
     if (app) {
-      return {
+      return cb(null, {
         defaultValue: app.get('data')
-      };
+      });
     }
 
-    this.io = io.connect();
-    var self = this;
-    this.io.on('data', function(data) {
-      self.setState(data);
+    this.io.on('connect', function(data) {
+      cb(null, {
+        defaultValue: data
+      });
     });
+    this.io.emit('data');
+  },
 
-    return {
-      defaultValue: 'kip'
+  componentWillMount: function() {
+    if (!app) {
+      this.io = io.connect();
+      var self = this;
+      this.io.on('data', function(data) {
+        self.setState(data);
+      });
     }
   },
 
@@ -59,6 +67,10 @@ var HomePage = React.createClass({
  * Module definition
  */
 var App = React.createClass({
+  mixins: [ReactAsync.Mixin],
+  io: false,
+
+
 	render: function() {
 		return (
 			<html>

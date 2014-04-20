@@ -27,14 +27,13 @@ app.http().io();
 app.set('data', 'kip');
 
 app.io.route('data', function(req) {
-//  app.set('data', req.data.data);
+  app.set('data', req.data.defaultValue);
   req.io.broadcast('data', req.data);
 });
 
-//app.io.route('a', function(req) {
-//  console.log('yeah');
-//  req.io.emit('b', app.get('data'));
-//});
+app.io.route('connect', function(req) {
+  req.io.emit('connect', app.get('data'));
+});
 
 app.use('/build', express.static(__dirname + '/build'));
 app.use(render);
