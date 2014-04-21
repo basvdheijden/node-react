@@ -1,43 +1,26 @@
-var url = require('url'),
-  	express = require('express.io'),
-    _ = require('lodash'),
-	  ReactAsync = require('react-async');
+var express = require('express.io'),
+    app = express();
 
-require('node-jsx').install();
-
-var app = express();
 app.http().io();
-var api = require('./components/api')(app);
-var Model = require('./model')(api);
-var text = new Model('Text');
 
+var api = require('./lib/api')(app);
+var Model = require('./lib/model')(api);
+var text = new Model('Text');
 api.set(text.toJSON());
 
-setTimeout(function() {
-  console.log('Changing property!');
-  text.set('text', 'kip');
-}, 5000);
+//setTimeout(function() {
+//  console.log('Changing property!');
+//  text.set('text', 'kip');
+//}, 5000);
 
-
-var ReactApp = require('./components/app')(app);
-var render = function(req, res, next) {
-	var path = url.parse(req.url).pathname;
-
-	console.log('Request :: ' + path);
-
-	ReactAsync.renderComponentToStringWithAsyncState(new ReactApp({
-		path: path
-	}), function(err, markup, data) {
-		if (err) {
-			return next(err);
-		}
-
-		res.send(ReactAsync.injectIntoMarkup(markup, data));
-	});
-};
-
+/**
+ * Static routes
+ */
 app.use('/build', express.static(__dirname + '/build'));
 app.use('/public', express.static(__dirname + '/public'));
-app.use(render);
+
+require('node-jsx').install();
+var React = require('./lib/react');
+app.use(React);
 
 app.listen(3030);

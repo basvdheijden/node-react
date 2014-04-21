@@ -7,8 +7,8 @@ module.exports = function(grunt) {
       dist: {
         files: {
           'build/client.js': [
-            'components/*.js',
-            'components/**/*.js'
+            'views/*.js',
+            'lib/*.js'
           ]
         }
       }
@@ -21,8 +21,8 @@ module.exports = function(grunt) {
       },
       browserify: {
         files: [
-          'components/*.js',
-          'components/**/*.js',
+          'views/*.js',
+          'lib/*.js'
         ],
         tasks: 'browserify:dist'
       }
@@ -31,8 +31,9 @@ module.exports = function(grunt) {
     jshint: {
       all: [
         'Gruntfile.js',
-        'api/*.js',
-        'index.js'
+        'views/*.js',
+        'lib/*.js',
+        'models/*.js'
       ],
 
       options: {
