@@ -43,7 +43,8 @@ module.exports = function(grunt) {
           'jQuery': true,
           '$': true,
           'document': true,
-          'window': true
+          'window': true,
+          'io': true
         },
         'forin': true,
         'immed': true,
