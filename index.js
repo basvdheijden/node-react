@@ -1,4 +1,6 @@
 var express = require('express.io'),
+    session = require('express-session'),
+    cookieParser = require('cookie-parser'),
     app = express();
 
 app.http().io();
@@ -6,12 +8,27 @@ app.http().io();
 var api = require('./lib/api')(app);
 var Model = require('./lib/model')(api);
 var text = new Model('Text');
-api.set(text.toJSON());
+api.set({
+  type: 'Text',
+  model: text.toJSON()
+}, false);
 
-//setTimeout(function() {
-//  console.log('Changing property!');
-//  text.set('text', 'kip');
-//}, 5000);
+setTimeout(function() {
+  console.log('Changing property!');
+  text.set('text', 'kip');
+}, 5000);
+
+/**
+ * Configuration
+ */
+app.use(cookieParser());
+app.use(session({
+  secret: 'node-react.io',
+  key: 'sid',
+  cookie: {
+    secure: true
+  }
+}));
 
 /**
  * Static routes

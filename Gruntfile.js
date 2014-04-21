@@ -8,7 +8,8 @@ module.exports = function(grunt) {
         files: {
           'build/client.js': [
             'views/*.js',
-            'lib/*.js'
+            'lib/*.js',
+            'models/*.js'
           ]
         }
       }
@@ -22,7 +23,8 @@ module.exports = function(grunt) {
       browserify: {
         files: [
           'views/*.js',
-          'lib/*.js'
+          'lib/*.js',
+          'models/*.js'
         ],
         tasks: 'browserify:dist'
       }

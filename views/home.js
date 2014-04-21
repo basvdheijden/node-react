@@ -16,7 +16,7 @@ var Home = React.createClass({
     return (
       <div>
         <h1>{this.props.operations}</h1>
-        <textarea ref="data" value={this.props.data} onChange={this.update} autoFocus={true} />
+        <textarea ref="data" value={this.props.text} onChange={this.update} autoFocus={true} />
       </div>
       );
   }
