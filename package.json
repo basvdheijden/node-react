@@ -17,7 +17,8 @@
     "node-jsx": "~0.10.0",
     "react-router-component": "~0.18.2",
     "express.io": "~1.1.13",
-    "lodash": "~2.4.1"
+    "lodash": "~2.4.1",
+    "backbone": "~1.1.2"
   },
   "devDependencies": {
     "grunt": "~0.4.4",

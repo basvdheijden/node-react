@@ -6,12 +6,18 @@ var url = require('url'),
 require('node-jsx').install();
 
 var app = express();
+app.http().io();
 var api = require('./components/api')(app);
+var Model = require('./model')(api);
+var text = new Model('Text');
 
-api.set({
-  text: 'Start typing..',
-  operations: 5
-});
+api.set(text.toJSON());
+
+setTimeout(function() {
+  console.log('Changing property!');
+  text.set('text', 'kip');
+}, 5000);
+
 
 var ReactApp = require('./components/app')(app);
 var render = function(req, res, next) {
@@ -29,17 +35,6 @@ var render = function(req, res, next) {
 		res.send(ReactAsync.injectIntoMarkup(markup, data));
 	});
 };
-
-app.http().io();
-
-app.io.route('data', function(req) {
-  api.set(req.data);
-  req.io.broadcast('data', req.data);
-});
-
-app.io.route('connect', function(req) {
-  req.io.emit('connect', api.get());
-});
 
 app.use('/build', express.static(__dirname + '/build'));
 app.use('/public', express.static(__dirname + '/public'));

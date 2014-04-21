@@ -6,6 +6,14 @@ var _ = require('lodash'),
 var API = function(app) {
   if (app) {
     this.app = app;
+    this.app.io.route('data', function(req) {
+      this.set(req.data);
+      req.io.broadcast('data', req.data);
+    }.bind(this));
+
+    this.app.io.route('connect', function(req) {
+      req.io.emit('connect', this.get());
+    }.bind(this));
   }
 
   this.server = (typeof window === 'undefined');
@@ -36,7 +44,8 @@ var API = function(app) {
 
   this.get = function(cb) {
     if (this.server) {
-      (cb || noop)(null, this.app.get.call(this.app, 'data'));
+      var model = this.app.get.call(this.app, 'data');
+      (cb || noop)(null, model);
     }
     else {
       this.query('connect', cb);
@@ -48,7 +57,10 @@ var API = function(app) {
   this.set = function(data, cb) {
     if (this.server) {
       this.get(function(oldData) {
-        (cb || noop)(null, this.app.set.call(this.app, 'data', _.merge(data, oldData)));
+        var newData = _.merge(data, oldData);
+        (cb || noop)(null, this.app.set.call(this.app, 'data', newData));
+
+        this.app.io.broadcast('data', newData);
       }.bind(this));
     }
     else {

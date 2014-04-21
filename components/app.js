@@ -3,11 +3,11 @@
  */
 
 var React = require('react'),
-	ReactRouter = require('react-router-component'),
-	Pages = ReactRouter.Pages,
-	Page = ReactRouter.Page,
-	Link = ReactRouter.Link,
-	NotFound = ReactRouter.NotFound;
+    ReactRouter = require('react-router-component'),
+    Pages = ReactRouter.Pages,
+    Page = ReactRouter.Page,
+    Link = ReactRouter.Link,
+    NotFound = ReactRouter.NotFound;
 
 /**
  * Dependencies
@@ -49,9 +49,7 @@ var App = React.createClass({
         <head>
           <link rel="stylesheet" href="/public/style.css" />
           <script src="/socket.io/socket.io.js"></script>
-          <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
           <script src="/build/client.js"></script>
-          <script src="/public/script.js"></script>
         </head>
         <body>
           <div className="main">
