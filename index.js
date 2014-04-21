@@ -1,14 +1,22 @@
 var url = require('url'),
   	express = require('express.io'),
+    _ = require('lodash'),
 	  ReactAsync = require('react-async');
 
 require('node-jsx').install();
 
 var app = express();
-var ReactApp = require('./components/app')(app);
+var api = require('./components/api')(app);
 
+api.set({
+  text: 'Start typing..',
+  operations: 5
+});
+
+var ReactApp = require('./components/app')(app);
 var render = function(req, res, next) {
 	var path = url.parse(req.url).pathname;
+
 	console.log('Request :: ' + path);
 
 	ReactAsync.renderComponentToStringWithAsyncState(new ReactApp({
@@ -24,15 +32,13 @@ var render = function(req, res, next) {
 
 app.http().io();
 
-app.set('data', 'kip');
-
 app.io.route('data', function(req) {
-  app.set('data', req.data.data);
+  api.set(req.data);
   req.io.broadcast('data', req.data);
 });
 
 app.io.route('connect', function(req) {
-  req.io.emit('connect', app.get('data'));
+  req.io.emit('connect', api.get());
 });
 
 app.use('/build', express.static(__dirname + '/build'));
