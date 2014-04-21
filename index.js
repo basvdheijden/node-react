@@ -9,7 +9,8 @@ var api = require('./lib/api')(app);
 var Model = require('./lib/model')(api);
 
 var text = new Model('Text');
-app.set('data', {
+
+api.set({
   type: 'Text',
   model: text
 });
@@ -40,5 +41,12 @@ app.use('/public', express.static(__dirname + '/public'));
 require('node-jsx').install();
 var React = require('./lib/react');
 app.use(React);
+
+process.on('uncaughtException', function() {
+  console.log(arguments,'u');
+});
+process.on('exit', function() {
+  console.log(arguments,'e');
+})
 
 app.listen(3030);
