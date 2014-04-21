@@ -7,15 +7,16 @@ app.http().io();
 
 var api = require('./lib/api')(app);
 var Model = require('./lib/model')(api);
+
 var text = new Model('Text');
-api.set({
+app.set('data', {
   type: 'Text',
-  model: text.toJSON()
-}, false);
+  model: text
+});
 
 setTimeout(function() {
   console.log('Changing property!');
-  text.set('text', 'kip');
+  text.set('text', 'KIP!');
 }, 5000);
 
 /**
